@@ -23,7 +23,7 @@
             </div>
             <div class="modal-body">
                 <p>Please provide Credentials for data access</p>
-                <form onsubmit="return credentialsSubmit(event)">
+                <form action="" onsubmit="return credentialsSubmit(event)">
                     <div class="form-group">
                       <label for="inputEmail">Email address</label>
                       <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
@@ -64,7 +64,10 @@
             <li class="nav-item">
               <a id="nav-login-link" class="nav-link" href="#loginModal" data-toggle="modal" data-target="#loginModal">Access details</a>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item">
+              <a id="nav-load-link" class="nav-link disabled" href="javascript:tryReloadingStandings()">Load Leauge</a>
+            </li>
+            <!-- <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                 Dropdown
               </a>
@@ -77,18 +80,18 @@
             </li>
             <li class="nav-item">
               <a class="nav-link disabled">Disabled</a>
-            </li>
+            </li> -->
           </ul>
-          <form class="form-inline my-2 my-lg-0">
+          <!-- <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
+          </form> -->
         </div>
     </nav>
     <!-- END Navbar -->
 
     <!-- Leauge Standing -->
-    <div class="container">
+    <div class="container p-5">
         <div id="league-standing">
             <!-- add table with JS -->
         </div>
