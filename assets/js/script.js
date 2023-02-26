@@ -288,7 +288,7 @@ function addLoaderElement() {
 }
 
 
-function tryReloadingStandings() {
+function reloadStandings() {
   // on mobile screen, hide the navbar when a navbar item is clicked
   // document.getElementsByClassName('navbar-toggler').collapse();
   // $('.collapse').collapse() // ez u.a. csak Jquery, nem muxik ez sem

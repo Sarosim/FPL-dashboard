@@ -2,11 +2,19 @@
     background-color:antiquewhite;
 } */
 
+.logo-image{
+  width: 36px;
+  height: 36px;
+  border-radius: 30%;
+  overflow: hidden;
+  margin-top: 0px;
+}
+
 .loader {
   background: url(https://upload.wikimedia.org/wikipedia/en/e/ec/Soccer_ball.svg);
-  background-size: 100px 100px;
-  height: 100px;
-  width: 100px;
+  background-size: 50px 50px;
+  height: 50px;
+  width: 50px;
   position: relative;
   -webkit-animation:roll 4.5s infinite;
   -moz-animation:roll 4.5s infinite;
@@ -15,17 +23,17 @@
  
 @-moz-keyframes roll {  
   0% {left:0px; -webkit-transform: rotate(-360deg);}
-  50% {left:85%; -webkit-transform: rotate(360deg);}
+  50% {left: calc(100% - 50px); -webkit-transform: rotate(360deg);}
   100% {left:0px; -webkit-transform: rotate(-360deg);}
 }
 @-webkit-keyframes roll { 
   0% {left:0px; -webkit-transform: rotate(-360deg);}
-  50% {left:85%; -webkit-transform: rotate(360deg);}
+  50% {left: calc(100% - 50px); -webkit-transform: rotate(360deg);}
   100% {left:0px; -webkit-transform: rotate(-360deg);}
 }
 
 @keyframes roll { 
   0% {left:0px; -webkit-transform: rotate(-360deg);}
-  50% {left:85%; -webkit-transform: rotate(360deg);}
+  50% {left: calc(100% - 50px); -webkit-transform: rotate(360deg);}
   100% {left:0px; -webkit-transform: rotate(-360deg);}
 }

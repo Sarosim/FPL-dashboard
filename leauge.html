@@ -95,18 +95,6 @@
   </nav>
   <!-- END Navbar -->
 
-  <!-- Leauge Landing Page Text -->
-  <div class="container p-5">
-    <div id="landing-intro">
-        <h3 class="pb-md-3 pb-lg-5 mx-auto">Welcome to this FPL stats special edition page</h3>
-        <div>
-          <p class="lead">To get access to live data, you have to provide your email address and an access key. </p>
-          <p> You can provide them under the <em>'Access details'</em> menut item above.</p>
-        </div>
-    </div>
-  </div>
-  <!-- END Landing Page Text -->
-
   <!-- Leauge Standing -->
   <div class="container p-5">
       <div id="league-standing">
@@ -119,5 +107,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
   <script src="assets/js/script.js"></script>
+  <script>
+    window.onload = function() {
+        reloadStandings();
+    };
+  </script>
 </body>
 </html>
