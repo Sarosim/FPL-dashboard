@@ -6,12 +6,7 @@ const FIXTURES_ENDPOINT = 'fixtures/';
 const DREAM_TEAM_ENDPOINT = 'dream-team/' // reqires gameweek id --> 8/
 const MANAGER_ENDPOINT = 'entry/';
 const MANAGER_TEAM_ENDPOINT = 'my-team/';
-const NUM_OF_TO_TRANSFERS = 10;
 const FPL_API_URL = "https://script.google.com/macros/s/AKfycbwG_NE_vBK39r-IdMYErHKr6VlKa4e4avGqOVhGctjEwojXN2kecxJ7Arwjdg1teqaHeA/exec?"
-
-const TRANSFERS_SHEET = "TransfersLog";
-const PLAYERS_SHEET = "allPlayers";
-const LEAGUE_SHEET = "Leauge";
 
 const MANAGERS = {
     "vanBasten's children": '4168120',
@@ -22,7 +17,6 @@ const MANAGERS = {
     'Fußball legends': '4177208'
   }
 
-// const CREDENTIALS_FORM = document.getElementById('credentials-form');
 const NAV_LOGIN_LINK = document.getElementById('nav-login-link');
 const NAV_LOAD_LINK = document.getElementById('nav-load-link');
 
@@ -30,10 +24,6 @@ const PROD = true;
 
 let urlEndpoint;
 let rememberMe = false;
-
-var testElement = document.getElementsByClassName("navbar-brand")[0];
-testElement.style.color = 'red';
-
 
 // checking if email and key are in storage and if so, fade the Access details link in navbar
 function styleNavLogin() {
@@ -299,21 +289,24 @@ function addLoaderElement() {
 
 
 function tryReloadingStandings() {
+  // on mobile screen, hide the navbar when a navbar item is clicked
+  // document.getElementsByClassName('navbar-toggler').collapse();
+  // $('.collapse').collapse() // ez u.a. csak Jquery, nem muxik ez sem
   // check if email address and password is in storage(s)
   let credentialsPresent = areCredentialsPresent();
-  console.log(credentialsPresent);
   if (credentialsPresent) {
+    //remove table with standings
+    let tables = document.getElementsByTagName('table');
+    if (tables.length > 0) {
+      tables[0].remove();
+    }
     // add loader to indicate loading time
     addLoaderElement();
     
     // call the functions to ping the API
     displayStandings();
   }
-  // BTW when writing to one Storage, always clear the other, if that's not done yet
   // test what error message comes back when wrong credentials are provided and handle it 
-  // display empty table and/or loading snippet to indicate loading time
-  // then call displayStandings()
-  // displayStandings();
   // add a reload (refresh) button, to call checkEmailPresence() and displayStandings()
 }
 
