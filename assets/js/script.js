@@ -150,7 +150,8 @@ function createTable(tableData) {
   let headerRow = document.createElement('tr');
   headerRow.innerHTML = `
       <th scope="col">Team</th>
-      <th scope="col">GameWeek Points</th>
+      <th scope="col">GW Points</th>
+      <th scope="col">GW Transf Cost</th>
       <th scope="col">Total Points</th>
   `
   tableBody.appendChild(headerRow);
@@ -175,21 +176,21 @@ function createTable(tableData) {
 
 async function displayStandings() {
   const input = await latestStandings();
-  // Name	Team	GameWeek Points	Total Points	Kapus	points	Player 2	points
+  // Name	Team;	GameWeek Points;	!GW TR Cost!; Total Points;	Kapus	points;	Player 2	points
   // {LiverManU=[{multiplier=1.0, assists=0.0, goals_scored=0.0, is_captain=false, bps=0.0, total_points=0.0, element=398.0, is_vice_captain=false, position=1.0}, {element=357.0, bps=9.0
   let displayData = [];
   for (let manager of Object.keys(input)) {
     let row = [];
     row.push(manager)
     // gwPoints
-    let prWeekNum = await getCurrentGameWeek()
-    // debugger;
-    let prWeekData = await fetchAPI(`entry/${MANAGERS[manager]}/event/${prWeekNum-1}/picks/`)
+    let curWeekNum = await getCurrentGameWeek() // TODO: naming refactoring
+    let prWeekData = await fetchAPI(`entry/${MANAGERS[manager]}/event/${curWeekNum-1}/picks/`)
     let totalBeforeGw = prWeekData['entry_history']['total_points']
+    let gwTransferCost = input[manager]['gwTrCost']
 
     let displayPlayers = [];
     let gwPoints = 0;
-    for (let player of input[manager]) {
+    for (let player of input[manager]['team']) {
       displayPlayers.push(player.element);
       displayPlayers.push(player.total_points);
       if (player.position < 12) {
@@ -197,13 +198,15 @@ async function displayStandings() {
       }
     }
     row.push(gwPoints);
-    row.push(totalBeforeGw + gwPoints);
+    // HERE comes the GameWeek Transfer Cost
+    row.push(-gwTransferCost);
+    row.push(totalBeforeGw - gwTransferCost + gwPoints);
     row.push(...displayPlayers);
     displayData.push(row);
-    displayData.sort(function(m1,m2) {return m2[2] - m1[2];})
+    displayData.sort(function(m1,m2) {return m2[3] - m1[3];})
   }
 
-  let selectedData = displayData.map(innerArray => innerArray.slice(0,3))
+  let selectedData = displayData.map(innerArray => innerArray.slice(0,4))
   createTable(selectedData);
 }
 
@@ -232,17 +235,20 @@ async function latestStandings() {
         }
         let leauge = {}
         for (let manager of Object.keys(MANAGERS)) {
-          let team = await getTeam(MANAGERS[manager], gameWeek);
-
+          let managerInfo = await getManagerData(MANAGERS[manager], gameWeek);
+          let team = managerInfo.team;
           for (let pl of team) {
             pl['total_points'] = currentPlayerData[pl.element].total_points;
             pl['bps'] = currentPlayerData[pl.element].bps;
             pl['goals_scored'] = currentPlayerData[pl.element].goals_scored;
             pl['assists'] = currentPlayerData[pl.element].assists;
           }
-          leauge[manager] = team;
+          leauge[manager] = {};
+          leauge[manager]['team'] = team;
+          leauge[manager]['gwTrCost'] = managerInfo['entry_history']['event_transfers_cost'];
           
         }
+
         return leauge
     } catch(error) {
       console.error(error)
@@ -259,11 +265,16 @@ async function getCurrentGameWeek() {
   return currentGWdata.current_event  
 }
 
-async function getTeam(entry, event) {
+async function getManagerData(entry, event) {
   urlEndpoint = `entry/${entry}/event/${event}/picks/`;
   try {
     const getTeamData = await fetchAPI(urlEndpoint);
-    return getTeamData['picks'];
+    let managerInfo = {};
+    managerInfo['team'] = getTeamData['picks']
+    managerInfo['entry_history'] = getTeamData['entry_history'];
+    managerInfo['active_chip'] = getTeamData['active_chip'];
+    managerInfo['automatic_subs'] = getTeamData['automatic_subs'];
+    return managerInfo;
   } catch(error) {
     console.error(error)
   }  
